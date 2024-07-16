@@ -19,7 +19,7 @@ def index(request):
 
     return render(request, 'home.html', {'shows_list': page_obj})
 
-def setwebhook():
+def setwebhook(request):
     webhook_url = f'https://{WEBHOOK_HOST}'
     set_webhook_url = f'https://api.telegram.org/bot{API_KEY}/setWebhook'
     
