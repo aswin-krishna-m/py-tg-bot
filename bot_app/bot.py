@@ -1223,20 +1223,11 @@ async def bot_tele(text):
 
   # Error handler
   application.add_error_handler(error_handler)
-
-  # Setting webhook
-  
-  webhook_url = f"https://{WEBHOOK_HOST}/webhook"
-  try:
-      await application.bot.set_webhook(url=webhook_url)
-      print(f"Webhook set to {webhook_url}")
-  except Exception as e:
-      print(f"Failed to set webhook: {e}")
         
+  # Update queue
+  await application.update_queue.put(Update.de_json(data=text, bot=application.bot))
+  
   #Start application
-  await application.update_queue.put(
-          Update.de_json(data=text, bot=application.bot)
-      )
   async with application:
       await application.start()
       await application.stop()

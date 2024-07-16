@@ -1,6 +1,6 @@
 from django.http import HttpResponse
-from django.shortcuts import render
-from .bot import bot_tele
+from django.shortcuts import render,redirect
+from .bot import bot_tele,API_KEY,WEBHOOK_HOST
 from .modules.my_constants import db_connection,shows
 import json,asyncio,requests
 from django.views.decorators.csrf import csrf_exempt
@@ -18,6 +18,19 @@ def index(request):
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'home.html', {'shows_list': page_obj})
+
+def setwebhook():
+    webhook_url = f'https://{WEBHOOK_HOST}'
+    set_webhook_url = f'https://api.telegram.org/bot{API_KEY}/setWebhook'
+    
+    response = requests.post(set_webhook_url, data={'url': webhook_url})
+    
+    if response.status_code == 200:
+        print('Webhook set successfully')
+    else:
+        print('Failed to set webhook:', response.content)
+    return redirect(index)
+
 
 @csrf_exempt
 def webhook(request):
