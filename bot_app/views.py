@@ -6,7 +6,6 @@ import json,asyncio,requests
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 
-@csrf_exempt
 def index(request):
     db, conn = db_connection()
     conn.execute(f"SELECT show_id, series, title FROM {shows}")
@@ -20,9 +19,8 @@ def index(request):
 
     return render(request, 'home.html', {'shows_list': page_obj})
 
-@csrf_exempt
 def setwebhook(request):
-    webhook_url = f'https://{WEBHOOK_HOST}'
+    webhook_url = f'https://{WEBHOOK_HOST}/webhook'
     set_webhook_url = f'https://api.telegram.org/bot{API_KEY}/setWebhook'
     
     response = requests.post(set_webhook_url, data={'url': webhook_url})
