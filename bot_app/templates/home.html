@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home-Shows</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        th:first-child, td:first-child {
+            width: 10%;
+        }
+        th:nth-child(2), td:nth-child(2) {
+            width: 10%; 
+        }
+        th:nth-child(3), td:nth-child(3) {
+            width: 10%; 
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style-type: none;
+            padding: 0;
+        }
+        .pagination li {
+            margin: 0 5px;
+        }
+        .pagination a {
+            text-decoration: none;
+            color: #007bff;
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            display: block;
+        }
+        .pagination a:hover {
+            background-color: #ddd;
+        }
+        .pagination .active a {
+            background-color: #007bff;
+            color: white;
+            border: 1px solid #007bff;
+        }
+        .pagination .disabled a {
+            color: #ccc;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Shows List</h1>
+    {% if shows_list %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Serial Number</th>
+                    <th>Show ID</th>
+                    <th>Series</th>
+                    <th>Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for show in shows_list %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ show.0 }}</td>
+                    <td>{% if show.1 %}Series{% else %} Movie{% endif %}</td>
+                    <td>{{ show.2 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            {% if shows_list.has_previous %}
+            <li><a href="?page=1">&laquo; First</a></li>
+            <li><a href="?page={{ shows_list.previous_page_number }}">&lsaquo; Previous</a></li>
+            {% else %}
+            <li class="disabled"><a>&laquo; First</a></li>
+            <li class="disabled"><a>&lsaquo; Previous</a></li>
+            {% endif %}
+
+            {% for num in shows_list.paginator.page_range %}
+            {% if shows_list.number == num %}
+            <li class="active"><a>{{ num }}</a></li>
+            {% elif num > shows_list.number|add:-3 and num < shows_list.number|add:3 %}
+            <li><a href="?page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+            {% endfor %}
+
+            {% if shows_list.has_next %}
+            <li><a href="?page={{ shows_list.next_page_number }}">Next &rsaquo;</a></li>
+            <li><a href="?page={{ shows_list.paginator.num_pages }}">Last &raquo;</a></li>
+            {% else %}
+            <li class="disabled"><a>Next &rsaquo;</a></li>
+            <li class="disabled"><a>Last &raquo;</a></li>
+            {% endif %}
+        </div>
+    {% else %}
+    <h4 style="text-align: center;">No shows added so far</h4>
+    {% endif %}
+</body>
+</html>

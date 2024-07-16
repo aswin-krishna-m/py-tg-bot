@@ -1,0 +1,5 @@
+.env
+bot_app/__pycache__/
+bot_app/modules/__pycache__/
+bot_app/migrations/__pycache__/
+py_tg_bot/__pycache__/
