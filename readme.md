@@ -1,5 +1,16 @@
 # Django based Telegram Bot
 
+## Environment variables
+
+**WEBHOOK_HOST** hostname without https:// and /webhook endpoint
+**API_KEY** Bot API
+**DEVELOPER_CHAT_ID** Your TG ID
+**host** DB host
+**user** DB username
+**password** DB Password
+**database** DB Name
+**port** DB Port
+
 This Telegram bot allows users to add files to a database and retrieve them by their titles. 
 Here's an overview of its features and usage instructions:
 
@@ -25,5 +36,6 @@ Here's an overview of its features and usage instructions:
 
 - Ensure that all commands are entered in the bot's private chat with the user. It can't be part of a group.
 - For security reasons, avoid sharing administrative privileges with unauthorized users.
+- Should be used for smaller circles or keeping files personally. Always obey copyright laws while handling such files.
 
 ---

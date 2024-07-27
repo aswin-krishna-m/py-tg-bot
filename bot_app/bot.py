@@ -1,15 +1,13 @@
 from telegram import  Update
-from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters, CallbackQueryHandler,CallbackContext, ConversationHandler
+from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters, CallbackQueryHandler
 from telegram.constants import ParseMode
-import logging,asyncio,html,json,logging,traceback, csv
+import logging,asyncio,html,json,logging,traceback
 from bot_app.modules.my_constants import *
 
 # Setting logger
 logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO)
 logging.getLogger("httpx").setLevel(logging.WARNING)
-logger = logging.getLogger(__name__)
-
-  
+logger = logging.getLogger(__name__)  
 
 # # Error handler to admin
 async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -913,7 +911,7 @@ async def user_2nd_Inline(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
       file_id =conn.fetchone()[0]
       await context.bot.send_chat_action(chat_id=query.message.chat_id,action='upload_document')
       await asyncio.sleep(message_action_delay)
-      context.bot.send_document(document=file_id, chat_id= query.message.chat_id,parse_mode=ParseMode.MARKDOWN)
+      await context.bot.send_document(document=file_id, chat_id= query.message.chat_id,parse_mode=ParseMode.MARKDOWN)
 
       db.close()
   else:
@@ -960,9 +958,9 @@ async def user_4th_Inline(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     await asyncio.sleep(message_action_delay)
     if conn.fetchone():
       markup=subs_keyboard(1,show_id,season,episode)
-      context.bot.send_document(document=file_id, caption=f"*S{season} E{episode}*", chat_id= query.message.chat_id,parse_mode=ParseMode.MARKDOWN,reply_markup=markup)
+      await context.bot.send_document(document=file_id, caption=f"*S{season} E{episode}*", chat_id= query.message.chat_id,parse_mode=ParseMode.MARKDOWN,reply_markup=markup)
     else:
-      context.bot.send_document(document=file_id, caption=f"*S{season} E{episode}*", chat_id= query.message.chat_id,parse_mode=ParseMode.MARKDOWN)
+      await context.bot.send_document(document=file_id, caption=f"*S{season} E{episode}*", chat_id= query.message.chat_id,parse_mode=ParseMode.MARKDOWN)
     db.close()
   else:
     if auth_result=="unapproved":
@@ -990,7 +988,7 @@ async def user_5th_Inline(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
       file_id =conn.fetchone()[0]
       await context.bot.send_chat_action(chat_id=query.message.chat_id,action='upload_document')
       await asyncio.sleep(message_action_delay)
-      context.bot.send_document(document=file_id, chat_id= query.message.chat_id,parse_mode=ParseMode.MARKDOWN)
+      await context.bot.send_document(document=file_id, chat_id= query.message.chat_id,parse_mode=ParseMode.MARKDOWN)
     elif action=='extra_keyboard':
       data = query.data.split(':')[1]
       page,show_id,lang_id,resolution,season = [int(i) for i in data.split(',')]
@@ -1002,7 +1000,7 @@ async def user_5th_Inline(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
       file_id,title =conn.fetchone()
       await context.bot.send_chat_action(chat_id=query.message.chat_id,action='upload_document')
       await asyncio.sleep(message_action_delay)
-      context.bot.send_document(document=file_id, caption=f"*Title : {title}*", chat_id= query.message.chat_id,parse_mode=ParseMode.MARKDOWN)
+      await context.bot.send_document(document=file_id, caption=f"*Title : {title}*", chat_id= query.message.chat_id,parse_mode=ParseMode.MARKDOWN)
     db.close()
   else:
     if auth_result=="unapproved":
